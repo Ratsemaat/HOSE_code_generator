@@ -160,14 +160,14 @@ class HoseGenerator():
             if formal_charge != 0:
                 if abs(formal_charge) == 1:
                     if formal_charge < 0:
-                        temp_code.append('-')
+                        temp_code += '-'
                     else:
-                        temp_code.append('+')
+                        temp_code += '+'
                 else:
-                    temp_code.append('\'')
+                    temp_code += '\''
                     if formal_charge > 0:
-                        temp_code.append('+')
-                    temp_code.append(formal_charge).append('\'')
+                        temp_code += '+'
+                    temp_code += formal_charge + '\''
 
         return temp_code
 

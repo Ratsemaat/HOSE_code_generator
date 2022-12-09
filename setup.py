@@ -5,7 +5,7 @@ setup(
     url='https://github.com/Ratsemaat/HOSE_code_generator',
 
     # Needed to actually package something
-    packages=['hose_generator'],
+    packages=['hosegen'],
 
     # Needed for dependencies
     install_requires=['rdkit'],
