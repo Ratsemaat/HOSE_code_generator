@@ -2,4 +2,4 @@ Generating HOSE codes of molecules with Python. Based on Java CDK HoseCodeGenera
 
 
 ### Installation
-pip install git+-https://github.com/Ratsemaat/HOSE_code_generator/new/main?readme=1
+pip install git+https://github.com/Ratsemaat/HOSE_code_generator/new/main?readme=1
