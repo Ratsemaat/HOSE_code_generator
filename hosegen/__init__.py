@@ -114,11 +114,14 @@ class HoseGenerator():
 
 
     def get_element_rank(self, symbol):
-        loc = self.ranked_symbols.index(symbol)
-        if loc >= 0:
+
+        if symbol in self.ranked_symbols:
+            loc = self.ranked_symbols.index(symbol)
             return self.symbol_rankings[loc]
+
         if self.table.GetMostCommonIsotopeMass(symbol):
             return 80000 - self.table.GetMostCommonIsotopeMass(symbol)
+
         return 80000
 
     def get_sphere_code(self, radius, sphere_nodes):

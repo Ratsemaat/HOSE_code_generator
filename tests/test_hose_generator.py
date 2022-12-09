@@ -6,6 +6,7 @@ from hosegen import HoseGenerator
 eth = Chem.MolFromSmiles("CC")
 mol1 = Chem.MolFromSmiles("CCCC")
 mol2 = Chem.MolFromSmiles("Cc1ccccc1")
+mol3 = Chem.MolFromSmiles("F[As@OH1-](F)(F)(F)(F)F")
 
 
 class HoseGeneratorTest(unittest.TestCase):
@@ -61,6 +62,12 @@ class HoseGeneratorTest(unittest.TestCase):
         value = self.gen.get_Hose_codes(mol2, 4)
         assert value == "C-3;*C*C(*C,*C/*C,*&/*&C),/"
 
+    def test_mol3(self):
+        value = self.gen.get_Hose_codes(mol3, 0)
+        assert value == "F-1;As-(FFFFF/,,,,/)/"
+
+        value = self.gen.get_Hose_codes(mol3, 1)
+        assert value == "As-6-;FFFFFF(,,,,,//)/"
 
 
 if __name__ == '__main__':
