@@ -1,7 +1,7 @@
 import unittest
 from rdkit import Chem
 
-from hose_generator import HoseGenerator
+from hosegen import HoseGenerator
 
 eth = Chem.MolFromSmiles("CC")
 mol1 = Chem.MolFromSmiles("CCCC")

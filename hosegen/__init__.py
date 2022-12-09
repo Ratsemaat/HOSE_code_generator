@@ -1,7 +1,7 @@
 import sys
 
 from rdkit import Chem
-from hose_generator.helpers import Node
+from hosegen.helpers import Node
 
 
 class HoseGenerator():
