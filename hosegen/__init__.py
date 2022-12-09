@@ -181,4 +181,4 @@ class HoseGenerator():
 
     def fill_up_sphere_delimiters(self):
         for i in range(len(self.spheres), 4):
-            self.HOSE_code.append(self.sphere_delimiters[i]);
+            self.HOSE_code+=(self.sphere_delimiters[i])
