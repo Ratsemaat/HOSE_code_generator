@@ -170,7 +170,7 @@ class HoseGenerator():
                     temp_code += '\''
                     if formal_charge > 0:
                         temp_code += '+'
-                    temp_code += formal_charge + '\''
+                    temp_code += str(formal_charge) + '\''
 
         return temp_code
 
