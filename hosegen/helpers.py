@@ -8,6 +8,7 @@ class Node:
     symbol = ""
     stringscore=""
     stopper = False
+    reorder = None
 
     def __init__(self, symbol, connector, atom, bond_type, degree, score):
         self.symbol = symbol

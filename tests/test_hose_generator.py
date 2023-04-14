@@ -1,13 +1,24 @@
 import unittest
 from rdkit import Chem
-
+import sys
+sys.path.append(".")
 from hosegen import HoseGenerator
+from hosegen.geometry import *
 
 eth = Chem.MolFromSmiles("CC")
 mol1 = Chem.MolFromSmiles("CCCC")
 mol2 = Chem.MolFromSmiles("Cc1ccccc1")
 mol3 = Chem.MolFromSmiles("F[As@OH1-](F)(F)(F)(F)F")
-
+molStereo1 = Chem.MolFromMolFile("tests/stereo_tetrahedral1.mol")
+molStereo2 = Chem.MolFromMolFile("tests/stereo_squareplanar1.mol")
+molStereo3 = Chem.MolFromMolFile("tests/stereo_squareplanar2.mol")
+molStereo4 = Chem.MolFromMolFile("tests/stereo_octahedral1.mol")
+molStereo5 = Chem.MolFromMolFile("tests/stereo_octahedral2.mol")
+molStereo6 = Chem.MolFromMolFile("tests/stereo_updown.mol")
+molEZ1 = Chem.MolFromMolFile("tests/ez_1.mol", removeHs=False)
+molEZ2 = Chem.MolFromMolFile("tests/ez_2.mol", removeHs=False)
+molEZ3 = Chem.MolFromMolFile("tests/ez_3.mol", removeHs=False)
+molEZ4 = Chem.MolFromMolFile("tests/ez_4.mol", removeHs=False)
 
 class HoseGeneratorTest(unittest.TestCase):
     def setUp(self):
@@ -15,7 +26,7 @@ class HoseGeneratorTest(unittest.TestCase):
 
     def test_simple(self):
         value = self.gen.get_Hose_codes(eth, 0)
-        print(value)
+        assert value == "C-4;C(//)/"
 
     def test_mol1_1(self):
         value = self.gen.get_Hose_codes(mol1, 0)
@@ -68,6 +79,92 @@ class HoseGeneratorTest(unittest.TestCase):
 
         value = self.gen.get_Hose_codes(mol3, 1)
         assert value == "As-6-;FFFFFF(,,,,,//)/"
+
+    def test_molStereo1(self):
+        value = self.gen.get_Hose_codes(molStereo1,0)
+        value2 = self.gen.get_Hose_codes(molStereo1,1)
+        assert value == value2
+        wedgemap1=create_wedgemap("tests/stereo_tetrahedral1.mol")
+        value = self.gen.get_Hose_codes(molStereo1,0,usestereo=True,wedgebond=wedgemap1)
+        assert value != value2
+        wedgemap12=create_wedgemap("tests/stereo_tetrahedral1.mol")
+        wedgemap12[20]=1
+        value3= self.gen.get_Hose_codes(molStereo1,0,usestereo=True,wedgebond=wedgemap12)
+        value4 = self.gen.get_Hose_codes(molStereo1,1,usestereo=True,wedgebond=wedgemap12)
+        assert value != value3
+        assert value2 != value4
+        assert value4 != value3
+        value3= self.gen.get_Hose_codes(molStereo1,13)
+        value4 = self.gen.get_Hose_codes(molStereo1,13,usestereo=True,wedgebond=wedgemap1)
+        assert value4 != value3
+        value= self.gen.get_Hose_codes(molStereo1,13)
+        value2 = self.gen.get_Hose_codes(molStereo1,13,usestereo=True,wedgebond=wedgemap12)
+        assert value != value2
+        assert value == value3
+        assert value2 != value4
+
+    def test_molStereo2(self):
+        wedgemap=create_wedgemap("tests/stereo_squareplanar1.mol")
+        value = self.gen.get_Hose_codes(molStereo2,0)
+        value2 = self.gen.get_Hose_codes_from_file("tests/stereo_squareplanar1.mol",0,usestereo=True)
+        assert value != value2
+        value3 = self.gen.get_Hose_codes(molStereo3,0)
+        value4 = self.gen.get_Hose_codes(molStereo3,0,usestereo=True,wedgebond=wedgemap)
+        assert value3 != value4
+        assert value == value3
+        assert value2 != value4
+
+    def test_molStereo3(self):
+        wedgemap=create_wedgemap("tests/stereo_octahedral1.mol")
+        value = self.gen.get_Hose_codes(molStereo4,2)
+        value2 = self.gen.get_Hose_codes(molStereo4,2,usestereo=True,wedgebond=wedgemap)
+        assert value != value2
+        value3 = self.gen.get_Hose_codes(molStereo5,2)
+        value4 = self.gen.get_Hose_codes(molStereo5,2,usestereo=True,wedgebond=wedgemap)
+        assert value3 != value4
+        assert value == value3
+        assert value2 != value4
+        value = self.gen.get_Hose_codes(molStereo4,5)
+        value2 = self.gen.get_Hose_codes(molStereo4,5,usestereo=True,wedgebond=wedgemap)
+        assert value != value2
+        value3 = self.gen.get_Hose_codes(molStereo5,5)
+        value4 = self.gen.get_Hose_codes(molStereo5,5,usestereo=True,wedgebond=wedgemap)
+        assert value3 != value4
+        assert value == value3
+        assert value2 != value4
+        value = self.gen.get_Hose_codes(molStereo4,6)
+        value2 = self.gen.get_Hose_codes(molStereo4,6,usestereo=True,wedgebond=wedgemap)
+        assert value != value2
+        value3 = self.gen.get_Hose_codes(molStereo5,6)
+        value4 = self.gen.get_Hose_codes(molStereo5,6,usestereo=True,wedgebond=wedgemap)
+        assert value3 != value4
+        assert value == value3
+        assert value2 != value4
+
+    def test_molstereoupdown(self):
+        wedgemap=create_wedgemap("tests/stereo_updown.mol")
+        value1 = self.gen.get_Hose_codes(molStereo6,2,usestereo=True)
+        #no stereochemistry recognized here
+        assert "@" not in value1
+        value2 = self.gen.get_Hose_codes_from_file("tests/stereo_updown.mol",2,usestereo=True)
+        #with the up/down mechanism it is
+        assert "@" in value2
+    
+    def test_molez1(self):
+        value1 = self.gen.get_Hose_codes(molEZ1,4,usestereo=False)
+        value2 = self.gen.get_Hose_codes(molEZ2,3,usestereo=False)
+        assert value1 == value2
+        value3 = self.gen.get_Hose_codes(molEZ1,4,usestereo=True)
+        value4 = self.gen.get_Hose_codes(molEZ2,3,usestereo=True)
+        assert value3 != value4
+        assert value1 != value3
+        assert value2 != value4
+        value3 = self.gen.get_Hose_codes(molEZ1,2,usestereo=True)
+        value4 = self.gen.get_Hose_codes(molEZ2,2,usestereo=True)
+        assert value3 != value4
+        value3 = self.gen.get_Hose_codes(molEZ3,2,usestereo=True)
+        value4 = self.gen.get_Hose_codes(molEZ4,2,usestereo=True)
+        assert value3 != value4
 
 
 if __name__ == '__main__':
