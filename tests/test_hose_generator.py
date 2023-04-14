@@ -15,6 +15,7 @@ molStereo3 = Chem.MolFromMolFile("tests/stereo_squareplanar2.mol")
 molStereo4 = Chem.MolFromMolFile("tests/stereo_octahedral1.mol")
 molStereo5 = Chem.MolFromMolFile("tests/stereo_octahedral2.mol")
 molStereo6 = Chem.MolFromMolFile("tests/stereo_updown.mol")
+molStereo7 = Chem.MolFromMolFile("tests/stereo_tetrahedral2.mol", removeHs=False)
 molEZ1 = Chem.MolFromMolFile("tests/ez_1.mol", removeHs=False)
 molEZ2 = Chem.MolFromMolFile("tests/ez_2.mol", removeHs=False)
 molEZ3 = Chem.MolFromMolFile("tests/ez_3.mol", removeHs=False)
@@ -140,6 +141,13 @@ class HoseGeneratorTest(unittest.TestCase):
         assert value3 != value4
         assert value == value3
         assert value2 != value4
+
+    def test_molStereo4 (self):
+        wedgemap=create_wedgemap("tests/stereo_tetrahedral2.mol")
+        value = self.gen.get_Hose_codes(molStereo7,0,usestereo=True,wedgebond=wedgemap)
+        value2 = self.gen.get_Hose_codes(molStereo7,1,usestereo=True,wedgebond=wedgemap)
+        assert value == "C-4;@FHClBr(,,//)/"
+        assert value2 == "F-1;C(@ClBrH/,/)/"
 
     def test_molstereoupdown(self):
         wedgemap=create_wedgemap("tests/stereo_updown.mol")

@@ -164,7 +164,7 @@ def order_stereo(gen, nodes, mol, chiralCenter, parent, wedgemap, strict=False):
                     hm[give_angle(mol, chiralCenter, parent.atom, neighbour)]= idx
             sorted_dict = collections.OrderedDict(hm)
             for idx, value in enumerate(hm.keys()):
-                sorted[idx]=chiralNeighbours[hm[value]]
+                sorted[idx]=chiralNeighbours[sorted_dict[value]]
         elif wedgemap[mol.GetBondBetweenAtoms(parent.atom.GetIdx(), chiralCenter.GetIdx()).GetIdx()]==0 or mol.GetBondBetweenAtoms(parent.atom.GetIdx(), chiralCenter.GetIdx()).GetBeginAtom().GetIdx()!=chiralCenter.GetIdx():
             angle1 = 0.0
             angle2 = 0.0
@@ -199,7 +199,7 @@ def order_stereo(gen, nodes, mol, chiralCenter, parent, wedgemap, strict=False):
                     idx+=1
             sorted_dict = collections.OrderedDict(hm)
             for idx, value in enumerate(hm.keys()):
-                sorted[idx]=chiralNeighbours[hm[value]]
+                sorted[idx]=chiralNeighbours[sorted_dict[value]]
         if wedgemap[mol.GetBondBetweenAtoms(parent.atom.GetIdx(), chiralCenter.GetIdx()).GetIdx()]==0  or mol.GetBondBetweenAtoms(parent.atom.GetIdx(), chiralCenter.GetIdx()).GetBeginAtom().GetIdx()!=chiralCenter.GetIdx():
             angle1 = 0.0
             angle2 = 0.0
