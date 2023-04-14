@@ -73,7 +73,6 @@ class HoseGenerator():
     def get_Hose_codes_from_file(self,
                        molfilepath: str,
                        atom_idx: int,
-                       min_radius: int = 2,
                        max_radius: int = 5,
                        usestereo: bool = False,
                        strict: bool = False):
@@ -86,15 +85,14 @@ class HoseGenerator():
                 if not bond.GetIdx() in wedgebonds:
                     wedgebonds[bond.GetIdx()]=0
             makeUpDownBonds(mol, wedgebonds)
-            return self.get_Hose_codes(mol, atom_idx, min_radius, max_radius, usestereo, wedgebond=wedgebonds)
+            return self.get_Hose_codes(mol, atom_idx, max_radius, usestereo, wedgebond=wedgebonds)
         else:
-            return self.get_Hose_Codes(mol, atom_idx, min_radius, max_radius, usestereo)
+            return self.get_Hose_Codes(mol, atom_idx, max_radius, usestereo)
 
 
     def get_Hose_codes(self,
                        mol: Chem.rdchem.Mol,
                        atom_idx: int,
-                       min_radius: int = 2,
                        max_radius: int = 5,
                        usestereo: bool = False,
 					   wedgebond: dict = None,
