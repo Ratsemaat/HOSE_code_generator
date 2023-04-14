@@ -8,7 +8,7 @@ setup(
     packages=['hosegen'],
 
     # Needed for dependencies
-    install_requires=['rdkit'],
+    install_requires=['rdkit', "xmlrunner"],
 
     # *strongly* suggested for sharing
     version='0.1',
