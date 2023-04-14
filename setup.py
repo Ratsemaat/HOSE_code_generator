@@ -14,6 +14,7 @@ setup(
     version='0.1',
 
     # The license can be anything you like
-    description='An example of a python package from pre-existing code',
+    description='HOSE code generator producing stereo enhanced HOSE code',
     # long_description=open('README.txt').read(),
+    license_files = ('LICENSE.txt',),
 )
