@@ -10,7 +10,7 @@ Basic use case example for finding standard as well as stereo-enhanced HOSE-code
 from hosegen import HoseGenerator
 from rdkit import Chem
 
-mol = Chem.MolFromSmiles("Cc1ccccc1")
+mol = Chem.MolFromSmiles("O=Cc1ccc(O)c(OC)c1")
 
 gen = HoseGenerator()
 regular_codes = gen.get_Hose_codes(mol, 2)
