@@ -1,14 +1,36 @@
 Generating HOSE codes of molecules with Python. Based on Java CDK HoseCodeGeneratorClass. Incorporates stereo-enhanced HOSE codes described in https://pubs.acs.org/doi/full/10.1021/acsomega.9b00488
 
-
+## Quick Start Guide
 ### Installation
 pip install git+https://github.com/Ratsemaat/HOSE_code_generator
+### Usage
+#### As a module
+Example
+``` python
+from hosegen import HoseGenerator 
 
-### Usage for standard HOSE codes
+filename = "foo.mol"
+  
+hs = HoseGenerator()
+hs.get_Hose_codes(filename)
+```
+#### From command line
+
+There  a command line program. It generates HOSE codes from a mol file. It can be run, if the code is unpacked, using
+
+>python3 -m hosegen *filename*
+
+or
+
+>python3 HOSE_code_generator-main.zip *filename*
+
+with the zip download.
+
+## Usage for standard HOSE codes
 
 The methods *get_Hose_codes* and *get_Hose_codes_from_file* can be used to generate a standard HOSE code. *get_Hose_codes* accepts a Molecule object, *get_Hose_codes_from_file* a filepath. Both need the index of the atom for which the HOSE code should be created as *atom_idx*. *max_radius* gives the number of spheres to use (default 5). *usestereo*, *wedgebond*, and *strict* are only used for the stereo-enhanced hose code (see below).
 
-### Usage for stereo-enhanced HOSE codes
+## Usage for stereo-enhanced HOSE codes
 
 The code can generate stereo-enhanced HOSE codes, as described in https://pubs.acs.org/doi/full/10.1021/acsomega.9b00488 The parameter *usestereo* needs to be set to true for this. There are a number of additional considerations to keep in mind:
 
@@ -19,13 +41,5 @@ The code can generate stereo-enhanced HOSE codes, as described in https://pubs.a
 * If hydrogens are added, we recommend using the function *makeUpDownBonds* once after adding hydrogens. This is because often only one wedge bond is given in cases where the hydrogen is missing, and it is assumed that the opposite wedge bond is on the hydrogen, which is made explicit by *makeUpDownBonds*. Again, *get_Hose_codes_from_file* does this internally.
 * The parameter *strict* (default false) determines if carbon centres with one wedge bond only are considered or not. Strictly speaking this is not possible (around a carbon, three bonds can never be in a plane), but it is used and found in the literature. With *strict=true*, they are ignored. Notice that we do not recommend to add missing hs automatically, not using *makeUpDownBonds*, and using *strict=false* together. The configuration may be different in that case from what is taken from two wedge bonds.
 
-### Command line program
 
-There is also a command line program. It generates HOSE codes from a mol file. It can be run, if the code is unpacked, using
->python3 -m hosegen
 
-or
-
->python3 HOSE_code_generator-main.zip
-
-with the zip download.
