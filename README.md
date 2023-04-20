@@ -4,15 +4,18 @@ Generating HOSE codes of molecules with Python. Based on Java CDK HoseCodeGenera
 ### Installation
 pip install git+https://github.com/Ratsemaat/HOSE_code_generator
 ### Usage
-#### As a module
-Example
+#### As a python module
+Basic use case example for finding standard as well as stereo-enhanced HOSE-codes. 
 ``` python
-from hosegen import HoseGenerator 
+from hosegen import HoseGenerator
+from rdkit import Chem
 
-filename = "foo.mol"
-  
-hs = HoseGenerator()
-hs.get_Hose_codes(filename)
+mol = Chem.MolFromSmiles("Cc1ccccc1")
+
+gen = HoseGenerator()
+regular_codes = gen.get_Hose_codes(mol, 2)
+stereo_codes = gen.get_Hose_codes(mol, 2, usestereo=True)
+
 ```
 #### From command line
 
