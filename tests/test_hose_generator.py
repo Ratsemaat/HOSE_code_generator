@@ -28,6 +28,8 @@ class HoseGeneratorTest(unittest.TestCase):
     def test_simple(self):
         value = self.gen.get_Hose_codes(eth, 0)
         assert value == "C-4;C(//)/"
+        value = self.gen.get_Hose_codes(eth, 0, ringsize=True)
+        assert value == "C-4;C(//)/"
 
     def test_mol1_1(self):
         value = self.gen.get_Hose_codes(mol1, 0)
@@ -50,9 +52,13 @@ class HoseGeneratorTest(unittest.TestCase):
 
         value = self.gen.get_Hose_codes(mol2, 0)
         assert value == "C-4;C(*C*C/*C,*C/*C,*&)*&/"
+        value = self.gen.get_Hose_codes(mol2, 0, ringsize=True)
+        assert value == "C-4;C(*C*C/*C,*C/*C,*&)*&/"
 
         value = self.gen.get_Hose_codes(mol2, 1)
         assert value == "C-3;*C*CC(*C,*C,/*C,*&/*&)/"
+        value = self.gen.get_Hose_codes(mol2, 1, ringsize=True)
+        assert value == "C-3-6;*C*CC(*C,*C,/*C,*&/*&)/"
 
         value = self.gen.get_Hose_codes(mol2, 2)
         "C-3;*C*C(*CC,*C/*C,,*&/*&)/"

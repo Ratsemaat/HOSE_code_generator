@@ -26,6 +26,6 @@ There is also a command line program. It generates HOSE codes from a mol file. I
 
 or
 
->python3 HOSE_code_generator-main.zip
+>python3 HOSE_code_generator-main.zip -m hosegen
 
-with the zip download.
+with the zip download. Use the -h parameter to se the help page.

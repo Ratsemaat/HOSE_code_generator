@@ -18,6 +18,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("filename", help = "The molfile to use")
 parser.add_argument("-a", "--AtomNumber", type=int, help = "Atom number to generate HOSE code for, starts at 0, if missing, all atoms will be done", required=False)
 parser.add_argument("-s", "--Strict", type=str2bool, nargs='?', const=True, default=False, help = "strict mode (default: %(default)s)", required=False)
+parser.add_argument("-u", "--UseStereo", type=str2bool, nargs='?', const=True, default=True, help = "generate stereo HOSE code (default: %(default)s)", required=False)
+parser.add_argument("-m", "--MaxRadius", type=int, default=5, help = "number of spheres to use (default: %(default)s)", required=False)
  
 # Read arguments from command line
 args = parser.parse_args()
