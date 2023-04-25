@@ -75,7 +75,8 @@ class HoseGenerator():
                        atom_idx: int,
                        max_radius: int = 5,
                        usestereo: bool = False,
-                       strict: bool = False):
+                       strict: bool = False,
+                       ringsize: bool = False):
         if usestereo:
             mol = Chem.MolFromMolFile(molfilepath)
             #we add explicit hydrogens and do the up/down bonds
@@ -85,9 +86,9 @@ class HoseGenerator():
                 if not bond.GetIdx() in wedgebonds:
                     wedgebonds[bond.GetIdx()]=0
             makeUpDownBonds(mol, wedgebonds)
-            return self.get_Hose_codes(mol, atom_idx, max_radius, usestereo, wedgebond=wedgebonds)
+            return self.get_Hose_codes(mol, atom_idx, max_radius, usestereo, wedgebond=wedgebonds, strict=strict, ringsize=ringsize)
         else:
-            return self.get_Hose_Codes(mol, atom_idx, max_radius, usestereo)
+            return self.get_Hose_Codes(mol, atom_idx, max_radius, usestereo, strict=strict, ringsize=ringsize)
 
 
     def get_Hose_codes(self,
@@ -95,8 +96,9 @@ class HoseGenerator():
                        atom_idx: int,
                        max_radius: int = 5,
                        usestereo: bool = False,
-					   wedgebond: dict = None,
-                       strict: bool = False):
+                       wedgebond: dict = None,
+                       strict: bool = False,
+                       ringsize: bool = False):
         #we use e/z info from rdkit, but we find all 4 atoms participating, to make it easier later
         self.zes=[]
         self.ezs=[]
@@ -128,7 +130,7 @@ class HoseGenerator():
         atom = mol.GetAtoms()[atom_idx]
         root = Node(self.get_element_symbol(atom.GetAtomicNum()), None, atom, 0, atom.GetDegree() + atom.GetTotalNumHs(), 0)
         self.HOSE_code = ""
-        self.create_center_code(atom)
+        self.create_center_code(atom, mol, ringsize)
         current_layer = [root]
 
 
@@ -286,10 +288,10 @@ class HoseGenerator():
 
         return temp_code
 
-    def create_center_code(self, atom):
+    def create_center_code(self, atom, mol, ringsize):
         partners_count = atom.GetTotalNumHs()+atom.GetDegree()
         self.center_code = self.table.GetElementSymbol(atom.GetAtomicNum()) + "-" + str(partners_count) \
-                           + self.create_charge_code(atom) + ";"
+            + self.create_charge_code(atom) + (self.get_ringcode(atom, mol) * ringsize) + ";"
 
     def get_element_symbol(self, param):
         return self.table.GetElementSymbol(param)
@@ -297,3 +299,11 @@ class HoseGenerator():
     def fill_up_sphere_delimiters(self):
         for i in range(len(self.spheres), 4):
             self.HOSE_code+=(self.sphere_delimiters[i])
+
+    def get_ringcode(self, root, mol):
+        ri = mol.GetRingInfo()
+        minsize = ri.MinAtomRingSize(root.GetIdx())
+        if minsize>0:
+            return "-"+str(minsize)
+        else:
+            return ""
