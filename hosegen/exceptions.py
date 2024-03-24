@@ -1,0 +1,2 @@
+class InvalidStartingAtomIndex(Exception):
+    pass
