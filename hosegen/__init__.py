@@ -5,6 +5,7 @@ from rdkit.Chem.rdchem import BondStereo
 from rdkit.Chem.rdchem import BondType
 from rdkit.Chem.rdchem import BondDir
 from hosegen.helpers import Node
+from hosegen.exceptions import InvalidStartingAtomIndex
 from hosegen.geometry import *
 
 class HoseGenerator():
@@ -43,7 +44,7 @@ class HoseGenerator():
 
         for node_set in self.spheres:
             for reorder in reorders:
-                toreorders=np.empty(len(reorder), dtype=object) 
+                toreorders=np.empty(len(reorder), dtype=object)
                 count=0
                 for node2 in node_set:
                     if node2.reorder is not None and tuple(node2.reorder)==reorder:
@@ -77,8 +78,9 @@ class HoseGenerator():
                        usestereo: bool = False,
                        strict: bool = False,
                        ringsize: bool = False):
+
+        mol = Chem.MolFromMolFile(molfilepath)
         if usestereo:
-            mol = Chem.MolFromMolFile(molfilepath)
             #we add explicit hydrogens and do the up/down bonds
             mol = Chem.rdmolops.AddHs(mol)
             wedgebonds = create_wedgemap(molfilepath)
@@ -88,7 +90,7 @@ class HoseGenerator():
             makeUpDownBonds(mol, wedgebonds)
             return self.get_Hose_codes(mol, atom_idx, max_radius, usestereo, wedgebond=wedgebonds, strict=strict, ringsize=ringsize)
         else:
-            return self.get_Hose_Codes(mol, atom_idx, max_radius, usestereo, strict=strict, ringsize=ringsize)
+            return self.get_Hose_codes(mol, atom_idx, max_radius, usestereo, strict=strict, ringsize=ringsize)
 
 
     def get_Hose_codes(self,
@@ -100,6 +102,8 @@ class HoseGenerator():
                        strict: bool = False,
                        ringsize: bool = False):
         #we use e/z info from rdkit, but we find all 4 atoms participating, to make it easier later
+        if len(mol.GetAtoms()) <= atom_idx:
+            raise InvalidStartingAtomIndex(f"atom_idx '{atom_idx}'  is out of range. Total explicit atoms: {mol.GetAtoms()}")
         self.zes=[]
         self.ezs=[]
         if usestereo:
@@ -138,7 +142,7 @@ class HoseGenerator():
             next_layer = []
 
             for node in current_layer:
-                if node.symbol in "H&;#:,":
+                if node.symbol in "H&;#:," and i > 0:
                     continue
 
                 bonds = node.atom.GetBonds()
