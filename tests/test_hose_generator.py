@@ -24,6 +24,7 @@ class HoseGeneratorTest(unittest.TestCase):
     molEZ3 = Chem.MolFromMolFile("tests/ez_3.mol", removeHs=False)
     molEZ4 = Chem.MolFromMolFile("tests/ez_4.mol", removeHs=False)
     molSymmetry = Chem.MolFromMolFile("tests/symmetryandstopinhose.mol", removeHs=False)
+    molZeroBond1 = Chem.MolFromMolFile("tests/zbo_1.mol")
 
     def setUp(self):
         self.gen = HoseGenerator()
@@ -200,6 +201,30 @@ class HoseGeneratorTest(unittest.TestCase):
         valueB = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 6, 6, True)
 
         assert valueB == valueA
+
+
+    def test_zbo1(self):
+        # Phospourus atoms should have the same HOSE codes
+        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,6,usestereo=False)
+        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,7,usestereo=False)
+        assert value1 == value2
+
+        # Carbon atoms same distance from non-planar carbon should have the same HOSE codes
+        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,1,2,usestereo=False)
+        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,2,2,usestereo=False)
+        assert value1 == value2
+
+        # Carbon atoms same distance from non-planar carbon should have the same HOSE codes
+        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,3,usestereo=False)
+        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,5,usestereo=False)
+        assert value1 == value2
+
+         # Carbon atoms with different distance from non-planar carbon should have the same HOSE codes
+        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,3,usestereo=False)
+        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,1,usestereo=False)
+        assert value1 != value2
+
+
 
 if __name__ == '__main__':
     import xmlrunner
