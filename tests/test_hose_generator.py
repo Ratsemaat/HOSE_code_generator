@@ -12,17 +12,17 @@ class HoseGeneratorTest(unittest.TestCase):
     mol1 = Chem.MolFromSmiles("CCCC")
     mol2 = Chem.MolFromSmiles("Cc1ccccc1")
     mol3 = Chem.MolFromSmiles("F[As@OH1-](F)(F)(F)(F)F")
-    molStereo1 = Chem.MolFromMolFile("stereo_tetrahedral1.mol")
-    molStereo2 = Chem.MolFromMolFile("stereo_squareplanar1.mol")
-    molStereo3 = Chem.MolFromMolFile("stereo_squareplanar2.mol")
-    molStereo4 = Chem.MolFromMolFile("stereo_octahedral1.mol")
-    molStereo5 = Chem.MolFromMolFile("stereo_octahedral2.mol")
-    molStereo6 = Chem.MolFromMolFile("stereo_updown.mol")
-    molStereo7 = Chem.MolFromMolFile("stereo_tetrahedral2.mol", removeHs=False)
-    molEZ1 = Chem.MolFromMolFile("ez_1.mol", removeHs=False)
-    molEZ2 = Chem.MolFromMolFile("ez_2.mol", removeHs=False)
-    molEZ3 = Chem.MolFromMolFile("ez_3.mol", removeHs=False)
-    molEZ4 = Chem.MolFromMolFile("ez_4.mol", removeHs=False)
+    molStereo1 = Chem.MolFromMolFile("tests/stereo_tetrahedral1.mol")
+    molStereo2 = Chem.MolFromMolFile("tests/stereo_squareplanar1.mol")
+    molStereo3 = Chem.MolFromMolFile("tests/stereo_squareplanar2.mol")
+    molStereo4 = Chem.MolFromMolFile("tests/stereo_octahedral1.mol")
+    molStereo5 = Chem.MolFromMolFile("tests/stereo_octahedral2.mol")
+    molStereo6 = Chem.MolFromMolFile("tests/stereo_updown.mol")
+    molStereo7 = Chem.MolFromMolFile("tests/stereo_tetrahedral2.mol", removeHs=False)
+    molEZ1 = Chem.MolFromMolFile("tests/ez_1.mol", removeHs=False)
+    molEZ2 = Chem.MolFromMolFile("tests/ez_2.mol", removeHs=False)
+    molEZ3 = Chem.MolFromMolFile("tests/ez_3.mol", removeHs=False)
+    molEZ4 = Chem.MolFromMolFile("tests/ez_4.mol", removeHs=False)
 
     def setUp(self):
         self.gen = HoseGenerator()
@@ -99,10 +99,10 @@ class HoseGeneratorTest(unittest.TestCase):
         value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,0)
         value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,1)
         assert value == value2
-        wedgemap1=create_wedgemap("stereo_tetrahedral1.mol")
+        wedgemap1=create_wedgemap("tests/stereo_tetrahedral1.mol")
         value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,0,usestereo=True,wedgebond=wedgemap1)
         assert value != value2
-        wedgemap12=create_wedgemap("stereo_tetrahedral1.mol")
+        wedgemap12=create_wedgemap("tests/stereo_tetrahedral1.mol")
         wedgemap12[20]=1
         value3= self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,0,usestereo=True,wedgebond=wedgemap12)
         value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,1,usestereo=True,wedgebond=wedgemap12)
@@ -119,9 +119,9 @@ class HoseGeneratorTest(unittest.TestCase):
         assert value2 != value4
 
     def test_molStereo2(self):
-        wedgemap=create_wedgemap("stereo_squareplanar1.mol")
+        wedgemap=create_wedgemap("tests/stereo_squareplanar1.mol")
         value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo2,0)
-        value2 = self.gen.get_Hose_codes_from_file("stereo_squareplanar1.mol",0,usestereo=True)
+        value2 = self.gen.get_Hose_codes_from_file("tests/stereo_squareplanar1.mol",0,usestereo=True)
         assert value != value2
         value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo3,0)
         value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo3,0,usestereo=True,wedgebond=wedgemap)
@@ -130,7 +130,7 @@ class HoseGeneratorTest(unittest.TestCase):
         assert value2 != value4
 
     def test_molStereo3(self):
-        wedgemap=create_wedgemap("stereo_octahedral1.mol")
+        wedgemap=create_wedgemap("tests/stereo_octahedral1.mol")
         value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4,2)
         value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4,2,usestereo=True,wedgebond=wedgemap)
         assert value != value2
@@ -157,18 +157,18 @@ class HoseGeneratorTest(unittest.TestCase):
         assert value2 != value4
 
     def test_molStereo4 (self):
-        wedgemap=create_wedgemap("stereo_tetrahedral2.mol")
+        wedgemap=create_wedgemap("tests/stereo_tetrahedral2.mol")
         value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo7,0,usestereo=True,wedgebond=wedgemap)
         value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo7,1,usestereo=True,wedgebond=wedgemap)
         assert value == "C-4;@FHClBr(,,//)/"
         assert value2 == "F-1;C(@ClBrH/,/)/"
 
     def test_molstereoupdown(self):
-        wedgemap=create_wedgemap("stereo_updown.mol")
+        wedgemap=create_wedgemap("tests/stereo_updown.mol")
         value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo6,2,usestereo=True)
         #no stereochemistry recognized here
         assert "@" not in value1
-        value2 = self.gen.get_Hose_codes_from_file("stereo_updown.mol",2,usestereo=True)
+        value2 = self.gen.get_Hose_codes_from_file("tests/stereo_updown.mol",2,usestereo=True)
         #with the up/down mechanism it is
         assert "@" in value2
     
@@ -193,7 +193,7 @@ if __name__ == '__main__':
     import xmlrunner
 
     unittest.main(
-        testRunner=xmlrunner.XMLTestRunner(output='test-reports'),
+        testRunner=xmlrunner.XMLTestRunner(output='tests-reports'),
         failfast=False,
         buffer=False,
         catchbreak=False)
