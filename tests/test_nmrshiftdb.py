@@ -4,11 +4,13 @@ import sys
 sys.path.append(".")
 from hosegen import HoseGenerator
 from hosegen.geometry import *
+import pytest
 
 class HoseGeneratorNmrshiftdbTest(unittest.TestCase):
     def setUp(self):
         self.gen = HoseGenerator()
 
+    @pytest.mark.skip(reason="to be run locally as nmrshiftdb2.sd is too large for git")
     def test_all(self):
         file1 = open('tests/nmrshiftdb2.sd', 'r')
         count = 0
