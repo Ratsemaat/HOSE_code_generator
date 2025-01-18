@@ -193,7 +193,7 @@ if __name__ == '__main__':
     import xmlrunner
 
     unittest.main(
-        testRunner=xmlrunner.XMLTestRunner(output='tests-reports'),
+        testRunner=xmlrunner.XMLTestRunner(output='test-reports'),
         failfast=False,
         buffer=False,
         catchbreak=False)
