@@ -14,11 +14,8 @@ class HoseGenerator():
     def __init__(self):
         self.rec=0
         self.center_code = None
-        self.symbol_rankings = [9000, 8900, 8800, 8700, 8600, 8500, 8400, 8300, 8200, 8100,
-                                8000, 7900, 1200, 1100, 1000]
-
-        self.ranked_symbols = ["C", "O", "N", "S", "P", "Si", "B", "F", "Cl", "Br", ";", "I",
-                               "#", "&", ","]
+        self.symbol_rankings = {"C": 9000, "O": 8900, "N": 8800,"S": 8700, "P":8600, "Si":8500,  "B": 8400,  "F": 8300, "Cl": 8200, 'Br': 8100,
+                                ";": 8000, "I": 7900,   "#": 1200, "&": 1100,  ",": 1000}
 
         self.sphere_delimiters = ["(", "/", "/", ")", "/", "/", "/", "/", "/", "/", "/", "/"]
 
@@ -200,9 +197,8 @@ class HoseGenerator():
 
     def get_element_rank(self, symbol):
 
-        if symbol in self.ranked_symbols:
-            loc = self.ranked_symbols.index(symbol)
-            return self.symbol_rankings[loc]
+        if symbol in self.symbol_rankings:
+            return self.symbol_rankings[symbol]
 
         if self.table.GetMostCommonIsotopeMass(symbol):
             return 80000 - self.table.GetMostCommonIsotopeMass(symbol)
