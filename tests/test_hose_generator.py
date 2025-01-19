@@ -23,6 +23,7 @@ class HoseGeneratorTest(unittest.TestCase):
     molEZ2 = Chem.MolFromMolFile("tests/ez_2.mol", removeHs=False)
     molEZ3 = Chem.MolFromMolFile("tests/ez_3.mol", removeHs=False)
     molEZ4 = Chem.MolFromMolFile("tests/ez_4.mol", removeHs=False)
+    molSymmetry = Chem.MolFromMolFile("tests/symmetryandstopinhose.mol", removeHs=False)
 
     def setUp(self):
         self.gen = HoseGenerator()
@@ -188,6 +189,17 @@ class HoseGeneratorTest(unittest.TestCase):
         value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ4,2,usestereo=True)
         assert value3 != value4
 
+
+    def test_symmetry_and_stop(self) :
+        valueA = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 2, 6, True)
+        valueB = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 3, 6, True)
+
+        assert valueB == valueA
+
+        valueA = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 4, 6, True)
+        valueB = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 5, 6, True)
+
+        assert valueB == valueA
 
 if __name__ == '__main__':
     import xmlrunner
