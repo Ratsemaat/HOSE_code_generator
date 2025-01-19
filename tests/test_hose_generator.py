@@ -197,7 +197,7 @@ class HoseGeneratorTest(unittest.TestCase):
         assert valueB == valueA
 
         valueA = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 4, 6, True)
-        valueB = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 5, 6, True)
+        valueB = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 6, 6, True)
 
         assert valueB == valueA
 

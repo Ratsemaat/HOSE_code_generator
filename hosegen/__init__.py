@@ -64,6 +64,9 @@ class HoseGenerator():
                     node.stringscore = (str(node.connector.stringscore)+ str(node.score).zfill(6))
                 node_set.sort(key=lambda x: x.stringscore, reverse=True)
 
+        for atom in self.mol.GetAtoms():
+            atom.SetProp('visited', 'false')
+
         self.HOSE_code += self.center_code
         for (idx, sphere) in enumerate(self.spheres):
             self.HOSE_code += self.get_sphere_code(idx, sphere)
@@ -168,9 +171,18 @@ class HoseGenerator():
         return self.HOSE_code
 
     def calculate_node_scores(self, sphere_nodes):
+        visited = set()
         for node in sphere_nodes:
-            node.score += self.get_element_rank(node.symbol)
+            if node and node.atom != None and node.atom.HasProp('visited') and node.atom.GetProp('visited') == 'true':
+                node.score += self.get_element_rank("&")
+            else:
+                node.score += self.get_element_rank(node.symbol)
             node.score += self.get_bond_score(node.bond_type)
+            visited.add(node)
+        
+        for node in visited:
+            if node != None and node.atom != None :
+                node.atom.SetProp('visited','true')
 
     def get_bond_score(self, bond_type):
         if bond_type == Chem.BondType.AROMATIC:
