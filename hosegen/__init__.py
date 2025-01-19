@@ -189,6 +189,8 @@ class HoseGenerator():
             return 100000
         if bond_type == Chem.BondType.SINGLE:
             return 0
+        if bond_type == Chem.BondType.ZERO:
+            return 400000
         if bond_type == Chem.BondType.DOUBLE:
             return 200000
         if bond_type == Chem.BondType.TRIPLE:
@@ -200,6 +202,8 @@ class HoseGenerator():
             return "*"
         if bond_type == Chem.BondType.SINGLE:
             return ""
+        if bond_type == Chem.BondType.ZERO:
+            return "<"
         if bond_type == Chem.BondType.DOUBLE:
             return "="
         if bond_type == Chem.BondType.TRIPLE:
