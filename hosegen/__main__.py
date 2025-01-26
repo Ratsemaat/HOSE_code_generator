@@ -4,7 +4,7 @@ from hosegen import HoseGenerator
 from hosegen.geometry import *
 import argparse
 
-def str2bool(v):
+def str2bool(v: str) -> bool:
     if isinstance(v, bool):
         return v
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
@@ -28,12 +28,12 @@ args = parser.parse_args()
 path = args.filename
 gen = HoseGenerator()
 molStereo1 = Chem.MolFromMolFile(path, removeHs=False)
-wedgemap1=create_wedgemap(path)
+wedgemap1=create_wedgemap(path) #type: ignore
 if args.AtomNumber is not None:
     value = gen.get_Hose_codes(molStereo1,args.AtomNumber,usestereo=args.UseStereo,strict=args.Strict,max_radius=args.MaxRadius,ringsize=args.RingSize,wedgebond=wedgemap1)
     print(value)
 else:
-    for idx,atom in enumerate(molStereo1.GetAtoms()):
+    for idx,atom in enumerate(molStereo1.GetAtoms()):  #type: ignore
         value = gen.get_Hose_codes(molStereo1,idx,usestereo=args.UseStereo,strict=args.Strict,max_radius=args.MaxRadius,ringsize=args.RingSize,wedgebond=wedgemap1)
         print(idx,":",value)
 

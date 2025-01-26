@@ -1,21 +1,17 @@
-class Node:
-    atom = None
-    connector = None
-    score = 0
-    degree = 0
-    bond_type = ""
-    ranking = 0
-    symbol = ""
-    stringscore=""
-    stopper = False
-    reorder = None
+from rdkit.Chem.rdchem import Atom, BondType
+from typing import Optional
 
-    def __init__(self, symbol, connector, atom, bond_type, degree, score):
+class Node:
+
+    def __init__(self, symbol:str, connector: Optional['Node'], atom: Optional[Atom], bond_type:Optional[BondType], degree:int, score:float):
         self.symbol = symbol
         self.connector = connector
         self.atom = atom
         self.degree = degree
         self.bond_type = bond_type
         self.score = score
-        ranking = 0
-        sortOrder = 1
+        self.ranking = 0
+        self.sortOrder = 1
+        self.reorder= None
+        self.stringscore: str = ''
+        self.stopper: bool = False

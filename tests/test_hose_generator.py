@@ -1,3 +1,4 @@
+#type: ignore
 import unittest
 from rdkit import Chem
 import sys

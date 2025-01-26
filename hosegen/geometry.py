@@ -1,10 +1,12 @@
+# type: ignore
 import numpy as np
 import collections
 from hosegen.helpers import Node
+from rdkit.Chem.rdchem import  Atom, Mol, Bond
 import math
 
-def is_chiral_centre(atom, mol, wedgemap):
-    atoms = atom.GetNeighbors()
+def is_chiral_centre(atom: Atom, mol: Mol, wedgemap):
+    atoms: list[Atom] = atom.GetNeighbors()
     if len(atoms)!=4 and len(atoms)!=6:
         return False
     for neighbour in atoms:
@@ -17,11 +19,11 @@ def is_chiral_centre(atom, mol, wedgemap):
             return True
     return False
 
-def is_tetrahedral(mol, atom, wedgemap, strict=False):
-    atoms = atom.GetNeighbors()
+def is_tetrahedral(mol, atom: Atom, wedgemap, strict=False):
+    atoms: list[Atom] = atom.GetNeighbors()
     if len(atoms) != 4:
         return 0
-    bonds = atom.GetBonds()
+    bonds: list[Bond] = atom.GetBonds()
     up = 0
     down = 0
     for bond in bonds:
