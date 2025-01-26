@@ -1,20 +1,16 @@
 from setuptools import setup
 
 setup(
-    name='HOSE_code_generator',
-    url='https://github.com/Ratsemaat/HOSE_code_generator',
-
+    name="HOSE_code_generator",
+    url="https://github.com/Ratsemaat/HOSE_code_generator",
     # Needed to actually package something
-    packages=['hosegen'],
-
+    packages=["hosegen"],
     # Needed for dependencies
-    install_requires=['rdkit', "xmlrunner"],
-
+    install_requires=["rdkit", "xmlrunner"],
     # *strongly* suggested for sharing
-    version='0.1',
-
+    version="0.1",
     # The license can be anything you like
-    description='HOSE code generator producing stereo enhanced HOSE code',
+    description="HOSE code generator producing stereo enhanced HOSE code",
     # long_description=open('README.txt').read(),
-    license_files = ('LICENSE.txt',),
+    license_files=("LICENSE.txt",),
 )
