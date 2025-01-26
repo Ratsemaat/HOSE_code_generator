@@ -1,0 +1,15 @@
+{
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.ruff": "explicit"
+  },
+  "pylint.ignorePatterns": ["version.py"],
+  "pylint.args": ["--rcfile=./.pylintrc"],
+  "python.linting.mypyEnabled": true,
+  "python.linting.mypyPath": "mypy",  // Path to the mypy executable
+  "python.linting.enabled": true
+
+}

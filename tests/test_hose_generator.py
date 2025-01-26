@@ -1,7 +1,8 @@
-#type: ignore
+# type: ignore
 import unittest
 from rdkit import Chem
 import sys
+
 sys.path.append(".")
 from hosegen import HoseGenerator
 from hosegen.geometry import *
@@ -30,7 +31,6 @@ class HoseGeneratorTest(unittest.TestCase):
     def setUp(self):
         self.gen = HoseGenerator()
 
-
     def test_hydrogen_as_starting_point(self):
         prop = Chem.MolFromSmiles("CCC")
         self.assertRaises(InvalidStartingAtomIndex, self.gen.get_Hose_codes, prop, 3)
@@ -57,7 +57,6 @@ class HoseGeneratorTest(unittest.TestCase):
     def test_mol1_4(self):
         value = self.gen.get_Hose_codes(HoseGeneratorTest.mol1, 3)
         self.assertEqual(value, "C-4;C(C/C/)/")
-
 
     def test_mol2_1(self):
 
@@ -99,100 +98,133 @@ class HoseGeneratorTest(unittest.TestCase):
         self.assertEqual(value, "As-6-;FFFFFF(,,,,,//)/")
 
     def test_molStereo1(self):
-        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,0)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,1)
+        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1, 0)
+        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1, 1)
         self.assertEqual(value, value2)
-        wedgemap1=create_wedgemap("tests/stereo_tetrahedral1.mol")
-        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,0,usestereo=True,wedgebond=wedgemap1)
+        wedgemap1 = create_wedgemap("tests/stereo_tetrahedral1.mol")
+        value = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo1, 0, usestereo=True, wedgebond=wedgemap1
+        )
         self.assertNotEqual(value, value2)
-        wedgemap12=create_wedgemap("tests/stereo_tetrahedral1.mol")
-        wedgemap12[20]=1
-        value3= self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,0,usestereo=True,wedgebond=wedgemap12)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,1,usestereo=True,wedgebond=wedgemap12)
+        wedgemap12 = create_wedgemap("tests/stereo_tetrahedral1.mol")
+        wedgemap12[20] = 1
+        value3 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo1, 0, usestereo=True, wedgebond=wedgemap12
+        )
+        value4 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo1, 1, usestereo=True, wedgebond=wedgemap12
+        )
         self.assertNotEqual(value, value3)
         self.assertNotEqual(value2, value4)
         self.assertNotEqual(value4, value3)
-        value3= self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,13)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,13,usestereo=True,wedgebond=wedgemap1)
+        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1, 13)
+        value4 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo1, 13, usestereo=True, wedgebond=wedgemap1
+        )
         self.assertNotEqual(value4, value3)
-        value= self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,13)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1,13,usestereo=True,wedgebond=wedgemap12)
+        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo1, 13)
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo1, 13, usestereo=True, wedgebond=wedgemap12
+        )
         self.assertNotEqual(value, value2)
         self.assertEqual(value, value3)
         self.assertNotEqual(value2, value4)
 
     def test_molStereo2(self):
-        wedgemap=create_wedgemap("tests/stereo_squareplanar1.mol")
-        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo2,0)
-        value2 = self.gen.get_Hose_codes_from_file("tests/stereo_squareplanar1.mol",0,usestereo=True)
+        wedgemap = create_wedgemap("tests/stereo_squareplanar1.mol")
+        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo2, 0)
+        value2 = self.gen.get_Hose_codes_from_file(
+            "tests/stereo_squareplanar1.mol", 0, usestereo=True
+        )
         self.assertNotEqual(value, value2)
-        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo3,0)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo3,0,usestereo=True,wedgebond=wedgemap)
+        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo3, 0)
+        value4 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo3, 0, usestereo=True, wedgebond=wedgemap
+        )
         self.assertNotEqual(value3, value4)
         self.assertEqual(value, value3)
         self.assertNotEqual(value2, value4)
 
     def test_molStereo3(self):
-        wedgemap=create_wedgemap("tests/stereo_octahedral1.mol")
-        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4,2)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4,2,usestereo=True,wedgebond=wedgemap)
+        wedgemap = create_wedgemap("tests/stereo_octahedral1.mol")
+        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4, 2)
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo4, 2, usestereo=True, wedgebond=wedgemap
+        )
         self.assertNotEqual(value, value2)
-        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5,2)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5,2,usestereo=True,wedgebond=wedgemap)
+        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5, 2)
+        value4 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo5, 2, usestereo=True, wedgebond=wedgemap
+        )
         self.assertNotEqual(value3, value4)
         self.assertEqual(value, value3)
         self.assertNotEqual(value2, value4)
-        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4,5)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4,5,usestereo=True,wedgebond=wedgemap)
+        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4, 5)
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo4, 5, usestereo=True, wedgebond=wedgemap
+        )
         self.assertNotEqual(value, value2)
-        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5,5)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5,5,usestereo=True,wedgebond=wedgemap)
+        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5, 5)
+        value4 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo5, 5, usestereo=True, wedgebond=wedgemap
+        )
         self.assertNotEqual(value3, value4)
         self.assertEqual(value, value3)
         self.assertNotEqual(value2, value4)
-        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4,6)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4,6,usestereo=True,wedgebond=wedgemap)
+        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo4, 6)
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo4, 6, usestereo=True, wedgebond=wedgemap
+        )
         self.assertNotEqual(value, value2)
-        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5,6)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5,6,usestereo=True,wedgebond=wedgemap)
+        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo5, 6)
+        value4 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo5, 6, usestereo=True, wedgebond=wedgemap
+        )
         self.assertNotEqual(value3, value4)
         self.assertEqual(value, value3)
         self.assertNotEqual(value2, value4)
 
-    def test_molStereo4 (self):
-        wedgemap=create_wedgemap("tests/stereo_tetrahedral2.mol")
-        value = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo7,0,usestereo=True,wedgebond=wedgemap)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo7,1,usestereo=True,wedgebond=wedgemap)
+    def test_molStereo4(self):
+        wedgemap = create_wedgemap("tests/stereo_tetrahedral2.mol")
+        value = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo7, 0, usestereo=True, wedgebond=wedgemap
+        )
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo7, 1, usestereo=True, wedgebond=wedgemap
+        )
         self.assertEqual(value, "C-4;@FHClBr(,,//)/")
         self.assertEqual(value2, "F-1;C(@ClBrH/,/)/")
 
     def test_molstereoupdown(self):
-        wedgemap=create_wedgemap("tests/stereo_updown.mol")
-        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molStereo6,2,usestereo=True)
-        #no stereochemistry recognized here
+        wedgemap = create_wedgemap("tests/stereo_updown.mol")
+        value1 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molStereo6, 2, usestereo=True
+        )
+        # no stereochemistry recognized here
         assert "@" not in value1
-        value2 = self.gen.get_Hose_codes_from_file("tests/stereo_updown.mol",2,usestereo=True)
-        #with the up/down mechanism it is
+        value2 = self.gen.get_Hose_codes_from_file(
+            "tests/stereo_updown.mol", 2, usestereo=True
+        )
+        # with the up/down mechanism it is
         assert "@" in value2
-    
+
     def test_molez1(self):
-        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ1,4,usestereo=False)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ2,3,usestereo=False)
+        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ1, 4, usestereo=False)
+        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ2, 3, usestereo=False)
         self.assertEqual(value1, value2)
-        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ1,4,usestereo=True)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ2,3,usestereo=True)
+        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ1, 4, usestereo=True)
+        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ2, 3, usestereo=True)
         self.assertNotEqual(value3, value4)
         self.assertNotEqual(value1, value3)
         self.assertNotEqual(value2, value4)
-        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ1,2,usestereo=True)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ2,2,usestereo=True)
+        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ1, 2, usestereo=True)
+        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ2, 2, usestereo=True)
         self.assertNotEqual(value3, value4)
-        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ3,2,usestereo=True)
-        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ4,2,usestereo=True)
+        value3 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ3, 2, usestereo=True)
+        value4 = self.gen.get_Hose_codes(HoseGeneratorTest.molEZ4, 2, usestereo=True)
         self.assertNotEqual(value3, value4)
 
-
-    def test_symmetry_and_stop(self) :
+    def test_symmetry_and_stop(self):
         valueA = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 2, 6, True)
         valueB = self.gen.get_Hose_codes(HoseGeneratorTest.molSymmetry, 3, 6, True)
 
@@ -203,35 +235,50 @@ class HoseGeneratorTest(unittest.TestCase):
 
         self.assertEqual(valueB, valueA)
 
-
     def test_zbo1(self):
         # Phospourus atoms should have the same HOSE codes
-        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,6,usestereo=False)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,7,usestereo=False)
+        value1 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molZeroBond1, 6, usestereo=False
+        )
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molZeroBond1, 7, usestereo=False
+        )
         self.assertEqual(value1, value2)
 
         # Carbon atoms same distance from non-planar carbon should have the same HOSE codes
-        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,1,2,usestereo=False)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,2,2,usestereo=False)
+        value1 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molZeroBond1, 1, 2, usestereo=False
+        )
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molZeroBond1, 2, 2, usestereo=False
+        )
         self.assertEqual(value1, value2)
 
         # Carbon atoms same distance from non-planar carbon should have the same HOSE codes
-        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,3,usestereo=False)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,5,usestereo=False)
+        value1 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molZeroBond1, 3, usestereo=False
+        )
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molZeroBond1, 5, usestereo=False
+        )
         self.assertEqual(value1, value2)
 
-         # Carbon atoms with different distance from non-planar carbon should have the same HOSE codes
-        value1 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,3,usestereo=False)
-        value2 = self.gen.get_Hose_codes(HoseGeneratorTest.molZeroBond1,1,usestereo=False)
+        # Carbon atoms with different distance from non-planar carbon should have the same HOSE codes
+        value1 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molZeroBond1, 3, usestereo=False
+        )
+        value2 = self.gen.get_Hose_codes(
+            HoseGeneratorTest.molZeroBond1, 1, usestereo=False
+        )
         self.assertNotEqual(value1, value2)
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import xmlrunner
 
     unittest.main(
-        testRunner=xmlrunner.XMLTestRunner(output='test-reports'),
+        testRunner=xmlrunner.XMLTestRunner(output="test-reports"),
         failfast=False,
         buffer=False,
-        catchbreak=False)
+        catchbreak=False,
+    )
